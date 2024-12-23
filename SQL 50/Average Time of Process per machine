@@ -1,4 +1,8 @@
-select *
-from Activity a1
-join Activity a2 
-on a1.machine_id=a2.machine_id and a1.process_id=a2.process_id
+SELECT 
+    machine_id,
+    ROUND(SUM(CASE WHEN activity_type='start' THEN timestamp*-1 ELSE timestamp END)*1.0
+    / (SELECT COUNT(DISTINCT process_id)),3) AS processing_time
+FROM 
+    Activity
+GROUP BY machine_id
+​
